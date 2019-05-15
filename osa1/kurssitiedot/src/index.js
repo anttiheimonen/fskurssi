@@ -4,15 +4,13 @@ import ReactDOM from 'react-dom'
 
 const Header = (props) => {
     return (
-        <h1>{props.course}</h1>
+        <h1>{props.course['name']}</h1>
     )
-
 }
 
 
 const Content = (props) => {
-
-    const partlist = props.parts.map( value  => <Part part={value} />)
+    const partlist = props.course['parts'].map( value  => <Part part={value} />)
     // Antaa varoituksen:
     // Warning: Each child in a list should have a unique "key" prop.
     // Liittyy Reactin haluamaan key atribuuttiin. Ei liene tärkeä tässä 
@@ -35,7 +33,7 @@ const Part = (props) => {
 
 const Total = (props) => {
     let score = 0
-    props.parts.map( value  => score += value['exercises'])
+    props.course.parts.map( value  => score += value['exercises'])
     return (
         <p>yhteensä {score} tehtävää</p>
     )
@@ -43,8 +41,9 @@ const Total = (props) => {
 
 
 const App = () => {
-    const course = 'Half Stack -sovelluskehitys'
-    const parts = [
+    const course = {
+        name: 'Half Stack -sovelluskehitys',
+        parts: [
         {
             name: 'Reactin perusteet',
             exercises: 10
@@ -57,13 +56,14 @@ const App = () => {
             name: 'Komponenttien tila',
             exercises: 14
         }
-    ]
+        ]
+    }
 
     return (
         <div>
             <Header course={course} />
-            <Content parts={parts} />
-            <Total parts={parts}  />   
+            <Content course={course} />
+            <Total course={course}  />
         </div>
     )
 }
