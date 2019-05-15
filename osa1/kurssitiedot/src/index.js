@@ -11,11 +11,16 @@ const Header = (props) => {
 
 
 const Content = (props) => {
+
+    const partlist = props.parts.map( value  => <Part part={value} />)
+    // Antaa varoituksen:
+    // Warning: Each child in a list should have a unique "key" prop.
+    // Liittyy Reactin haluamaan key atribuuttiin. Ei liene tärkeä tässä 
+    // harjoituksessa.
+
     return (
         <div>
-            <Part p={props.p1} />
-            <Part p={props.p2} /> 
-            <Part p={props.p3} /> 
+            {partlist}
         </div>
     )
 }
@@ -23,38 +28,42 @@ const Content = (props) => {
 
 const Part = (props) => {
     return (
-        <p>{props.p['name']} {props.p['exercises']} </p>
+        <p>{props.part['name']} {props.part['exercises']} </p>
     )
 }
 
 
 const Total = (props) => {
+    let score = 0
+    props.parts.map( value  => score += value['exercises'])
     return (
-        <p>yhteensä {props.p1 + props.p2 + props.p3 } tehtävää</p>
+        <p>yhteensä {score} tehtävää</p>
     )
 }
 
 
 const App = () => {
     const course = 'Half Stack -sovelluskehitys'
-    const part1 = {
-        name: 'Reactin perusteet',
-        exercises: 10
-    }
-    const part2 = {
-        name: 'Tiedonvälitys propseilla',
-        exercises: 7
-    }
-    const part3 = {
-        name: 'Komponenttien tila',
-        exercises: 14
-    }
+    const parts = [
+        {
+            name: 'Reactin perusteet',
+            exercises: 10
+        },
+        {
+            name: 'Tiedonvälitys propseilla',
+            exercises: 7
+        },
+        {
+            name: 'Komponenttien tila',
+            exercises: 14
+        }
+    ]
 
     return (
         <div>
             <Header course={course} />
-            <Content p1={part1} p2={part2} p3={part3} />
-            <Total p1={part1['exercises']} p2={part2['exercises']} p3={part3['exercises']}  />   
+            <Content parts={parts} />
+            <Total parts={parts}  />   
         </div>
     )
 }
