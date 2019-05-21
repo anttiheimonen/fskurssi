@@ -1,0 +1,5 @@
+Selain alkaa suorittamaan spa.js-koodia
+    Selain -> Palvelin: HTTP POST https://fullstack-exampleapp.herokuapp.com/new_note_spa
+    Palvelin -> Selain: {"message":"note created"}
+    Javascript luo HTML-sivulle uuden elementin, johon se lisää uuden viestin.
+Javascriptin suoritus loppuu.
