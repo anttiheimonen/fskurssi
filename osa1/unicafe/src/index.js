@@ -19,12 +19,18 @@ const Button = ({ handleClick, text }) => (
 
 
 const Display = ({scoreGood, scoreNeutral, scoreBad}) => {
+  const numOfScores = scoreGood + scoreNeutral + scoreBad
+  const average = (scoreGood - scoreBad) / numOfScores 
+  const goodPercentage = scoreGood / numOfScores * 100
   return (
     <div>
       <h1>statistics</h1>
       <p>good {scoreGood}</p>
       <p>neutral {scoreNeutral}</p>
       <p>bad {scoreBad}</p>
+      <p>all {numOfScores}</p>
+      <p>average {isNaN(average) ? '' : average }</p>
+      <p>positive { isNaN(goodPercentage) ? '' : goodPercentage } %</p>
     </div>
   )
 }
