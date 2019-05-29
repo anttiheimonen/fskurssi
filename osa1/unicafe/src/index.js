@@ -18,7 +18,7 @@ const Button = ({ handleClick, text }) => (
 ) 
 
 
-const Display = ({scoreGood, scoreNeutral, scoreBad}) => {
+const Statistics = ({scoreGood, scoreNeutral, scoreBad}) => {
   const numOfScores = scoreGood + scoreNeutral + scoreBad
   const average = (scoreGood - scoreBad) / numOfScores 
   const goodPercentage = scoreGood / numOfScores * 100
@@ -51,7 +51,7 @@ const App = () => {
       <Button handleClick={addReview(setBad, bad + 1)}
         text='bad' />
 
-      <Display scoreGood={good} scoreNeutral={neutral} scoreBad={bad} />
+      <Statistics scoreGood={good} scoreNeutral={neutral} scoreBad={bad} />
     </div>
   )
 }
