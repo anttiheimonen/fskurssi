@@ -3,24 +3,39 @@ import ReactDOM from 'react-dom'
 
 const App = (props) => {
   const [selected, setSelected] = useState(0)
+  const [mostVoted, setMostVoted] = useState(0)
   const [points, setPoints] = useState(Array.apply(null, new Array(anecdotes.length)).map(Number.prototype.valueOf,0))
 
+  // Adds vote and sets mostVoted
   const vote = (voted) => {
     const copy = { ...points }
     copy[voted] += 1 
     console.log(copy)
+    if (copy[voted] > copy[mostVoted]) setMostVoted(voted)
     return copy
   }
 
+  
   return (
     <div>
-      {props.anecdotes[selected]}
-      <div>
-        <Button handleClick={ () => setPoints( vote(selected) ) }
-         text='vote' />
-        <Button handleClick={ () => setSelected( nextAnecdote(anecdotes.length, selected) )}
-         text='next anectode' />
-      </div>
+      <h1>Anecdote of the day</h1>
+      <Anecdote show={selected} anecdotes={props.anecdotes} votes={points}  />
+      <Button handleClick={ () => setPoints( vote(selected) ) }
+        text='vote' />
+      <Button handleClick={ () => setSelected( nextAnecdote(anecdotes.length, selected) )}
+        text='next anectode' />
+      <h1>Anecdote with most votes</h1>
+      <Anecdote show={mostVoted} anecdotes={props.anecdotes} votes={points} />
+    </div>
+  )
+}
+
+
+const Anecdote = ({show, anecdotes, votes}) => {
+  return (
+    <div>
+        <div>{anecdotes[show]}</div>
+        <div>has {votes[show]} votes</div>
     </div>
   )
 }
