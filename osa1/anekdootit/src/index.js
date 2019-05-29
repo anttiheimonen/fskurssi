@@ -3,12 +3,22 @@ import ReactDOM from 'react-dom'
 
 const App = (props) => {
   const [selected, setSelected] = useState(0)
+  const [points, setPoints] = useState(Array.apply(null, new Array(anecdotes.length)).map(Number.prototype.valueOf,0))
+
+  const vote = (voted) => {
+    const copy = { ...points }
+    copy[voted] += 1 
+    console.log(copy)
+    return copy
+  }
 
   return (
     <div>
       {props.anecdotes[selected]}
       <div>
-        <Button handleClick={ () => setSelected( Random(anecdotes.length, selected) )}
+        <Button handleClick={ () => setPoints( vote(selected) ) }
+         text='vote' />
+        <Button handleClick={ () => setSelected( nextAnecdote(anecdotes.length, selected) )}
          text='next anectode' />
       </div>
     </div>
@@ -23,9 +33,9 @@ const Button = ({ handleClick, text }) => (
 ) 
 
 
-// Picks up the number for next anecdote. Won't return the number
+// Picks up a number for next anecdote. Won't return the number
 // given as current.
-const Random = (numOfItems, current) => {
+const nextAnecdote = (numOfItems, current) => {
   const next = Math.floor(Math.random() * (numOfItems - 1) )
   if (next >= current) return next + 1
   return next
