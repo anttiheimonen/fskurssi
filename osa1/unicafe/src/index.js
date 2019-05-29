@@ -18,6 +18,15 @@ const Button = ({ handleClick, text }) => (
 ) 
 
 
+const Statistic = (props) => {
+  return (
+    <div>
+      {props.text} {props.value} {props.unit}
+    </div>
+  )
+}
+
+
 const Statistics = ({scoreGood, scoreNeutral, scoreBad}) => {
   const numOfScores = scoreGood + scoreNeutral + scoreBad
   if (numOfScores === 0) return <div>No feedback given</div>
@@ -25,12 +34,12 @@ const Statistics = ({scoreGood, scoreNeutral, scoreBad}) => {
   const goodPercentage = scoreGood / numOfScores * 100
   return (
     <div>
-      <p>good {scoreGood}</p>
-      <p>neutral {scoreNeutral}</p>
-      <p>bad {scoreBad}</p>
-      <p>all {numOfScores}</p>
-      <p>average {average}</p>
-      <p>positive {goodPercentage} %</p>
+      <Statistic text='good' value={scoreGood} />
+      <Statistic text='neutral' value={scoreNeutral} />
+      <Statistic text='bad' value={scoreBad} />
+      <Statistic text='all' value={numOfScores} />
+      <Statistic text='average' value={average} />
+      <Statistic text='positive' value={goodPercentage} unit='%' />
     </div>
   )
 }
