@@ -20,17 +20,17 @@ const Button = ({ handleClick, text }) => (
 
 const Statistics = ({scoreGood, scoreNeutral, scoreBad}) => {
   const numOfScores = scoreGood + scoreNeutral + scoreBad
+  if (numOfScores === 0) return <div>No feedback given</div>
   const average = (scoreGood - scoreBad) / numOfScores 
   const goodPercentage = scoreGood / numOfScores * 100
   return (
     <div>
-      <h1>statistics</h1>
       <p>good {scoreGood}</p>
       <p>neutral {scoreNeutral}</p>
       <p>bad {scoreBad}</p>
       <p>all {numOfScores}</p>
-      <p>average {isNaN(average) ? '' : average }</p>
-      <p>positive { isNaN(goodPercentage) ? '' : goodPercentage } %</p>
+      <p>average {average}</p>
+      <p>positive {goodPercentage} %</p>
     </div>
   )
 }
@@ -51,6 +51,7 @@ const App = () => {
       <Button handleClick={addReview(setBad, bad + 1)}
         text='bad' />
 
+      <h1>statistics</h1>
       <Statistics scoreGood={good} scoreNeutral={neutral} scoreBad={bad} />
     </div>
   )
