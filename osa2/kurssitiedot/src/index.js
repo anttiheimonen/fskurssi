@@ -2,14 +2,18 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 
 // Pohjana tehtävälle käytetty kurssin mallivastausta 1-5
+
 const Header = props =>
   <h1>{props.course}</h1>
 
-/* const Total = props => {
-  const total = props.parts[0].exercises + props.parts[1].exercises + props.parts[2].exercises
 
-  return <p>yhteensä {total} tehtävää</p>
-} */
+const Total = ({parts}) => {
+    const sumFunction = (sum, cur) => sum + cur.exercises
+    // Reduce-funktion alkuarvon (0) asettaminen estää tyhjän taulukon
+    // muutoin aiheuttamat virheilmoitukset
+    const total = parts.reduce(sumFunction, 0)    
+    return <p>total of {total} excercises</p>
+}
   
 
 const Part = props =>
@@ -27,12 +31,11 @@ const Content = ({courses}) => {
 
 
 const Course = ({ course }) => {
-    //console.log(course)
-    
     return (
         <div>
             <Header course={course.name} />
             <Content courses={course.parts} />
+            <Total parts={course.parts} />
         </div>
     )
 }
