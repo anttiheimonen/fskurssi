@@ -1,5 +1,6 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
+import './components/Courses'
 
 // Pohjana tehtävälle käytetty kurssin mallivastausta 1-5
 
