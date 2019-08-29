@@ -27,8 +27,12 @@ const App = () => {
     setPersons(persons.concat(entry))
   }
 
-  const numbers = () => persons.map(person =>
-    <PhoneEntry info="person" />
+  const numbers = () => persons.map(person => {
+      console.log(person);
+      return (
+        <PhoneEntry key={person.name} info={person} />
+      )
+    }
   )
 
 
@@ -48,7 +52,7 @@ const App = () => {
       </form>
       <h2>Numbers</h2>
       <ul>
-        <PhoneEntry numbers={persons} />
+        {numbers()}
       </ul>
     </div>
   )
