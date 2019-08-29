@@ -1,10 +1,6 @@
 import React, { useState } from 'react'
-
-const PhoneEntry = ({info}) => {
-  return (
-    <li>{info.name}</li>
-  )
-}
+import PersonForm from './components/PersonForm'
+import Numbers from './components/Numbers'
 
 const App = () => {
   const [ persons, setPersons] = useState([
@@ -19,44 +15,37 @@ const App = () => {
 
   const addEntry = (event) => {
     event.preventDefault()
-    console.log("painettu")
+    console.log(persons.indexOf("Arto Hellas"))
+
+    // findIndex() vaikuttaisi parhaalta tarkistamaan onko nimi jo taulukossa
+
+    persons.forEach()
+
     const entry = {
       name: newName
     }
     console.log(persons.concat(entry))
     setPersons(persons.concat(entry))
+    setNewName('')
   }
 
-  const numbers = () => persons.map(person => {
-      console.log(person);
-      return (
-        <PhoneEntry key={person.name} info={person} />
-      )
-    }
-  )
+
 
 
   return (
     <div>
       <h2>Phonebook</h2>
-      <form onSubmit={addEntry}>
-        <div>
-          name: <input
-            value={newName}
-            onChange={handleNameChange }
-          />
-        </div>
-        <div>
-          <button type="submit">add</button>
-        </div>
-      </form>
+      <PersonForm
+        handleSubmit={addEntry}
+        handleNameChange={handleNameChange}
+        valueName={newName}
+      />
       <h2>Numbers</h2>
       <ul>
-        {numbers()}
+        <Numbers phonebook={persons}/>
       </ul>
     </div>
   )
-
 }
 
 export default App
