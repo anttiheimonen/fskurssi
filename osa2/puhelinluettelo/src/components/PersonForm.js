@@ -14,6 +14,12 @@ const PersonForm = ({ handleSubmit,
           />
         </div>
         <div>
+          number: <input
+            value={ValueNumber}
+            onChange={handleNumberChange }
+          />
+        </div>
+        <div>
           <button type="submit">add</button>
         </div>
       </form>

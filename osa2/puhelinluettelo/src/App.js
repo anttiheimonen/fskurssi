@@ -17,20 +17,26 @@ const App = () => {
     event.preventDefault()
     console.log(persons.indexOf("Arto Hellas"))
 
-    // findIndex() vaikuttaisi parhaalta tarkistamaan onko nimi jo taulukossa
+    // Look for the array index of the newName. If person does not
+    // exist, -1 is returned and person can be added
+    const searchFunction = (person) => person.name === newName
+    const idx = persons.findIndex(searchFunction)
+    // console.log(idx)
 
-    persons.forEach()
-
-    const entry = {
-      name: newName
+    // Function to add the new name
+    const addNewName = () => {
+      const entry = {
+        name: newName
+      }
+      setPersons(persons.concat(entry))
+      setNewName('')
     }
-    console.log(persons.concat(entry))
-    setPersons(persons.concat(entry))
-    setNewName('')
+
+    // Add to phonebook or alert the error
+    (idx < 0) ?
+      addNewName()
+    : alert(`${newName} is already added to phonebook`)
   }
-
-
-
 
   return (
     <div>
