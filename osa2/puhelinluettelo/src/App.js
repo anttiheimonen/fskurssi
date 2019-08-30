@@ -27,8 +27,8 @@ const App = () => {
   const addEntry = (event) => {
     event.preventDefault()
 
-    // Look for the array index of the newName. If person does not
-    // exist, -1 is returned and person can be added
+    // Look for the array index of person with newName. If person
+    // does not exist, -1 is returned and person can be added
     const searchFunction = (person) => person.name === newName
     const idx = persons.findIndex(searchFunction)
 
@@ -65,7 +65,7 @@ const App = () => {
         <FilterField
           handleFilterChange={handleFilterChange}
         />
-      <h2>add a new</h2>
+      <h3>add a new</h3>
         <PersonForm
           handleSubmit={addEntry}
           valueName={newName}
@@ -73,7 +73,7 @@ const App = () => {
           valueNumber={newNumber}
           handleNumberChange={handleNumberChange}
         />
-      <h2>Numbers</h2>
+      <h3>Numbers</h3>
       <ul>
         {phonebookRows()}
       </ul>
