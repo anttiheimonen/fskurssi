@@ -1,14 +1,14 @@
 import React from 'react'
 
-const Number = ({info}) => {
+const Number = ({person}) => {
   return (
-    <li>{info.name}</li>
+    <li>{person.name} {person.number}</li>
   )
 }
 
-const Numbers = ({phonebook}) => phonebook.map(person => {
+const Numbers = ({phonebook: persons}) => persons.map(person => {
     return (
-      <Number key={person.name} info={person} />
+      <Number key={person.name} person={person} />
     )
   }
 )

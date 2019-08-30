@@ -4,19 +4,19 @@ const PersonForm = ({ handleSubmit,
                     handleNameChange,
                     handleNumberChange,
                     valueName,
-                    ValueNumber }) => {
+                    valueNumber }) => {
     return (
         <form onSubmit={handleSubmit}>
         <div>
           name: <input
             value={valueName}
-            onChange={handleNameChange }
+            onChange={handleNameChange}
           />
         </div>
         <div>
           number: <input
-            value={ValueNumber}
-            onChange={handleNumberChange }
+            value={valueNumber}
+            onChange={handleNumberChange}
           />
         </div>
         <div>
