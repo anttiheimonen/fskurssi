@@ -5,6 +5,7 @@ import Filter from "./components/Filter"
 const App = () => {
 
   const [ countries, setCountries ] = useState([])
+  const [ filter, setFilter ] = useState('')
 
   useEffect(() => {
     axios
@@ -15,10 +16,14 @@ const App = () => {
     })
   }, [])
 
+  const handleFilterChange = (event) => {
+    console.log(event.target.value)
+    setFilter(event.target.value)
+  }
 
   return (
     <div>
-      <Filter />
+      <Filter value={filter} handleChange={handleFilterChange} />
     </div>
   )
 }
