@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 import Filter from "./components/Filter"
+import CountryList from './components/CountryList'
 
 const App = () => {
 
@@ -23,7 +24,12 @@ const App = () => {
 
   return (
     <div>
-      <Filter value={filter} handleChange={handleFilterChange} />
+      <div>
+        <Filter value={filter} handleChange={handleFilterChange} />
+      </div>
+      <div>
+        <CountryList />
+      </div>
     </div>
   )
 }
