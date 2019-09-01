@@ -2,11 +2,12 @@ import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 import Filter from "./components/Filter"
 import CountryList from './components/CountryList'
+import CountryDetails from './components/CountryDetails'
 
 const App = () => {
 
   const [ countries, setCountries ] = useState([])
-  const [ filter, setFilter ] = useState('')
+  const [ filter, setFilter ] = useState('Fi')
 
   useEffect(() => {
     axios
@@ -18,8 +19,27 @@ const App = () => {
   }, [])
 
   const handleFilterChange = (event) => {
-    console.log(event.target.value)
     setFilter(event.target.value)
+  }
+
+  // Returns country filtered country list
+  const showCountryList = () => {
+    const lowerCaseFilter = filter.toLowerCase()
+    // Create a new array that has filtered countries
+    const filteredCountries = countries.filter(country =>
+      country.name.toLowerCase().includes(lowerCaseFilter))
+
+    // Return value is based on number search results
+    return (filteredCountries.length > 10) ?
+          'Too many matches'
+      : (filteredCountries.length > 1) ?
+          <CountryList
+            countries={filteredCountries}
+            onClick={(country) => setFilter(country)}
+          />
+      : (filteredCountries.length > 0) ?
+          <CountryDetails country={filteredCountries[0]}/>
+      :   'No results'
   }
 
   return (
@@ -28,11 +48,11 @@ const App = () => {
         <Filter value={filter} handleChange={handleFilterChange} />
       </div>
       <div>
-        <CountryList countries={countries} />
+        {showCountryList()}
       </div>
     </div>
   )
 }
 
 
-export default App;
+export default App

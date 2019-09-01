@@ -1,8 +1,14 @@
 import React from 'react'
 
-// {countries.map(country => country.name)}
-const CountryList = ({countries}) => {
-  const row = (country) => <div key={country.name}>{country.name}</div>
+const CountryList = ({countries, onClick}) => {
+  const row = (country) => {
+    return (
+      <div key={country.name}>
+        {country.name}
+        <button onClick={() => onClick(country.name)}>show</button>
+      </div>
+    )
+  }
 
   return (
     <div>
