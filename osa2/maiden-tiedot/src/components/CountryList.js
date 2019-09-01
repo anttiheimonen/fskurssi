@@ -1,8 +1,13 @@
 import React from 'react'
 
-const CountryList = () => {
+// {countries.map(country => country.name)}
+const CountryList = ({countries}) => {
+  const row = (country) => <div key={country.name}>{country.name}</div>
+
   return (
-    <div>heihei</div>
+    <div>
+      {countries.map(country => row(country) )}
+    </div>
   )
 }
 
