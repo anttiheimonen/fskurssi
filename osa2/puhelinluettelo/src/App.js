@@ -14,6 +14,8 @@ const App = () => {
     personService
       .getAll()
         .then(initialPersons => {
+          console.log(initialPersons)
+
           setPersons(initialPersons)
         })
   }, [])
@@ -27,9 +29,14 @@ const App = () => {
   const handleFilterChange = (event) =>
     setFilterText(event.target.value)
 
-  const handleDelete = (person) => {
-    console.log("poistetaan " + person)
-
+  // Removes person with given id-number
+  const removePerson = (personID) => {
+    console.log("poistetaan " + personID)
+    personService
+      .remove(personID)
+      .then(
+        setPersons(persons.filter(person => person.id !== personID))
+      )
   }
 
   const addEntry = (event) => {
@@ -68,7 +75,7 @@ const App = () => {
     return <Numbers persons={persons.filter(
       person => person.name.toLowerCase().includes(lowerCaseFilter)
     )}
-    handleDelete={(person) => handleDelete(person)}/>
+    handleDelete={(person) => removePerson(person)}/>
   }
 
   return (
