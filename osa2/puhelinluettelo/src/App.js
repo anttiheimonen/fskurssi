@@ -27,6 +27,11 @@ const App = () => {
   const handleFilterChange = (event) =>
     setFilterText(event.target.value)
 
+  const handleDelete = (person) => {
+    console.log("poistetaan " + person)
+
+  }
+
   const addEntry = (event) => {
     event.preventDefault()
 
@@ -60,9 +65,10 @@ const App = () => {
     const lowerCaseFilter = filterText.toLowerCase()
     // Filter compares person name on low case with filter word
     // on low case.
-    return <Numbers phonebook={persons.filter(
+    return <Numbers persons={persons.filter(
       person => person.name.toLowerCase().includes(lowerCaseFilter)
-    )}/>
+    )}
+    handleDelete={(person) => handleDelete(person)}/>
   }
 
   return (
@@ -80,9 +86,9 @@ const App = () => {
           handleNumberChange={handleNumberChange}
         />
       <h3>Numbers</h3>
-      <ul>
+      <div>
         {phonebookRows()}
-      </ul>
+      </div>
     </div>
   )
 }

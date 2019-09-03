@@ -1,14 +1,22 @@
 import React from 'react'
 
-const Number = ({person}) => {
+const Number = ({person, handleDelete}) => {
   return (
-    <li>{person.name} {person.number}</li>
+    <div>
+      {person.name}
+      {person.number}
+      <button onClick={() => handleDelete(person.name)}>Delete</button>
+    </div>
   )
 }
 
-const Numbers = ({phonebook: persons}) => persons.map(person => {
+const Numbers = ({persons, handleDelete}) => persons.map(person => {
     return (
-      <Number key={person.name} person={person} />
+      <Number
+        key={person.name}
+        person={person}
+        handleDelete={handleDelete}
+      />
     )
   }
 )
