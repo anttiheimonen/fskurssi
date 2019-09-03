@@ -39,19 +39,6 @@ const App = () => {
       )
   }
 
-  const handlePersonSubmit = event => {
-    event.preventDefault()
-    // Look for the existing person
-    const oldPerson = persons.find(
-      person => person.name.toLowerCase() === newName.toLowerCase()
-    )
-
-    oldPerson === undefined ?
-        addNewPerson()
-      : updatePerson(oldPerson)
-  }
-
-
   const addNewPerson = () => {
     const newPerson = {
       name: newName,
@@ -68,14 +55,28 @@ const App = () => {
   }
 
 
-  const updatePerson = person => {
-    const updatedPerson = { ...person, number: newNumber}
-    console.log(updatedPerson)
-
+  const updatePerson = UpdatePerson => {
+    const answer = confirm(`${UpdatePerson.name} is already added to phonebook. Replace the old number with a new one?`)
+    if (!answer) return
+    const updatedPerson = { ...UpdatePerson, number: newNumber}
     personService
       .update(updatedPerson.id, updatedPerson)
-      .then() // KESKEN
+      .then(returnedPerson => {
+        console.log(returnedPerson)
+        setPersons(persons.map(person => person.id !== returnedPerson.id ? person : returnedPerson))
+      })
+  }
 
+  // Updates existing or adds a new person
+  const handlePersonSubmit = event => {
+    event.preventDefault()
+    // Look for the existing person
+    const oldPerson = persons.find(
+      person => person.name.toLowerCase() === newName.toLowerCase()
+    )
+    oldPerson === undefined ?
+        addNewPerson()
+      : updatePerson(oldPerson)
   }
 
   /*
