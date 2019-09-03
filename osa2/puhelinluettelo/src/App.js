@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react'
-import axios from 'axios';
 import PersonForm from './components/PersonForm'
 import Numbers from './components/Numbers'
 import FilterField from './components/FilterField'
+import personService from './services/persons'
 
 const App = () => {
   const [ persons, setPersons] = useState([])
@@ -11,10 +11,11 @@ const App = () => {
   const [ filterText, setFilterText ] = useState('')
 
   useEffect(() => {
-    axios.get('http://localhost:3001/persons').then(response => {
-      console.log(response.data)
-      setPersons(response.data)
-    })
+    personService
+      .getAll()
+        .then(initialPersons => {
+          setPersons(initialPersons)
+        })
   }, [])
 
   const handleNameChange = (event) =>
@@ -53,7 +54,6 @@ const App = () => {
 
   const phonebookRows = () => {
     const lowerCaseFilter = filterText.toLowerCase()
-    console.log(lowerCaseFilter);
     // Filter compares person name on low case with filter word
     // on low case.
     return <Numbers phonebook={persons.filter(
