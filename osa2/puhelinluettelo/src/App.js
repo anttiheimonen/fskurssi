@@ -32,23 +32,22 @@ const App = () => {
 
     // Look for the array index of person with newName. If person
     // does not exist, -1 is returned and person can be added
-    const searchFunction = (person) => person.name === newName
-    const idx = persons.findIndex(searchFunction)
+    const idx = persons.findIndex(person => person.name === newName)
 
-    // Function to add the new name
-    const addNewName = () => {
-      const entry = {
+    // Function to add the new person
+    const addNewPerson = () => {
+      const newPerson = {
         name: newName,
         number: newNumber
       }
-      setPersons(persons.concat(entry))
+      setPersons(persons.concat(newPerson))
       setNewName('')
       setNewNumber('')
     }
 
     // Add to phonebook or alert the error
     (idx < 0) ?
-      addNewName()
+      addNewPerson()
     : alert(`${newName} is already added to phonebook`)
   }
 
