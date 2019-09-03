@@ -31,7 +31,7 @@ const App = () => {
 
   // Removes person with given id-number
   const removePerson = (personID) => {
-    console.log("poistetaan " + personID)
+    console.log('poistetaan ' + personID)
     personService
       .remove(personID)
       .then(
@@ -39,14 +39,55 @@ const App = () => {
       )
   }
 
+  const handlePersonSubmit = event => {
+    event.preventDefault()
+    // Look for the existing person
+    const oldPerson = persons.find(
+      person => person.name.toLowerCase() === newName.toLowerCase()
+    )
+
+    oldPerson === undefined ?
+        addNewPerson()
+      : updatePerson(oldPerson)
+  }
+
+
+  const addNewPerson = () => {
+    const newPerson = {
+      name: newName,
+      number: newNumber
+    }
+    personService
+      .create(newPerson)
+      .then(returnedPerson => {
+        console.log(returnedPerson)
+        setPersons(persons.concat(returnedPerson))
+      })
+    setNewName('')
+    setNewNumber('')
+  }
+
+
+  const updatePerson = person => {
+    const updatedPerson = { ...person, number: newNumber}
+    console.log(updatedPerson)
+
+    personService
+      .update(updatedPerson.id, updatedPerson)
+      .then() // KESKEN
+
+  }
+
+  /*
   const addEntry = (event) => {
     event.preventDefault()
 
     // Look for the array index of person with newName. If person
     // does not exist, -1 is returned and person can be added
     const idx = persons.findIndex(person => person.name === newName)
+    console.log(persons.find(person => person.name === newName))
 
-    // Function to add the new person
+    // Function to add a new person
     const addNewPerson = () => {
       const newPerson = {
         name: newName,
@@ -66,7 +107,7 @@ const App = () => {
     (idx < 0) ?
       addNewPerson()
     : alert(`${newName} is already added to phonebook`)
-  }
+  } */
 
   const phonebookRows = () => {
     const lowerCaseFilter = filterText.toLowerCase()
@@ -86,7 +127,7 @@ const App = () => {
         />
       <h3>add a new</h3>
         <PersonForm
-          handleSubmit={addEntry}
+          handleSubmit={handlePersonSubmit}
           valueName={newName}
           handleNameChange={handleNameChange}
           valueNumber={newNumber}
