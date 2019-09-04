@@ -50,20 +50,23 @@ const App = () => {
         console.log(returnedPerson)
         setPersons(persons.concat(returnedPerson))
       })
-    setNewName('')
-    setNewNumber('')
   }
 
-
   const updatePerson = UpdatePerson => {
-    const answer = confirm(`${UpdatePerson.name} is already added to phonebook. Replace the old number with a new one?`)
+    const answer = confirm(`${UpdatePerson.name} is already added to ` +
+      `phonebook. Replace the old number with a new one?`)
     if (!answer) return
     const updatedPerson = { ...UpdatePerson, number: newNumber}
     personService
       .update(updatedPerson.id, updatedPerson)
       .then(returnedPerson => {
         console.log(returnedPerson)
-        setPersons(persons.map(person => person.id !== returnedPerson.id ? person : returnedPerson))
+        setPersons(persons.map(person =>
+          person.id !== returnedPerson.id ? person : returnedPerson
+        ))
+      })
+      .catch(error => {
+        console.log(`Error while updating person`)
       })
   }
 
@@ -77,38 +80,12 @@ const App = () => {
     oldPerson === undefined ?
         addNewPerson()
       : updatePerson(oldPerson)
+
+    // Input fields will be cleared even if user cancels
+    // the update. Not ideal.
+    setNewName('')
+    setNewNumber('')
   }
-
-  /*
-  const addEntry = (event) => {
-    event.preventDefault()
-
-    // Look for the array index of person with newName. If person
-    // does not exist, -1 is returned and person can be added
-    const idx = persons.findIndex(person => person.name === newName)
-    console.log(persons.find(person => person.name === newName))
-
-    // Function to add a new person
-    const addNewPerson = () => {
-      const newPerson = {
-        name: newName,
-        number: newNumber
-      }
-      personService
-        .create(newPerson)
-        .then(returnedPerson => {
-          console.log(returnedPerson)
-          setPersons(persons.concat(returnedPerson))
-        })
-      setNewName('')
-      setNewNumber('')
-    }
-
-    // Add to phonebook or alert the error
-    (idx < 0) ?
-      addNewPerson()
-    : alert(`${newName} is already added to phonebook`)
-  } */
 
   const phonebookRows = () => {
     const lowerCaseFilter = filterText.toLowerCase()
