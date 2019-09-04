@@ -3,7 +3,8 @@ import PersonForm from './components/PersonForm'
 import Numbers from './components/Numbers'
 import FilterField from './components/FilterField'
 import personService from './services/persons'
-import Notification from './components/Notification'
+import ErrorNotification from './components/ErrorNotification'
+import SuccessNotifications from './components/SuccessNotification'
 
 const App = () => {
   const [ persons, setPersons] = useState([])
@@ -11,6 +12,7 @@ const App = () => {
   const [ newNumber, setNewNumber] = useState('')
   const [ filterText, setFilterText ] = useState('')
   const [ errorMessage, setErrorMessage] = useState('Placeholder error')
+  const [ successMessage, setSuccessMessage] = useState('Placeholder success')
 
   useEffect(() => {
     personService
@@ -31,17 +33,32 @@ const App = () => {
   const handleFilterChange = (event) =>
     setFilterText(event.target.value)
 
+  // Shows given message error message for a peroid of time
+  const showErrorMessage = message => {
+    setErrorMessage(message)
+    setTimeout(() => {
+      setErrorMessage(null)}, 5000
+    )
+  }
+
+  // Shows given message success message for a peroid of time
+  const showSuccessMessage = message => {
+    setSuccessMessage(message)
+    setTimeout(() => {
+      setSuccessMessage(null)}, 5000
+    )
+  }
+
   // Removes person with given id-number
-  const removePerson = (personID) => {
-    console.log('poistetaan ' + personID)
+  const removePerson = (removablePerson) => {
+    console.log('poistetaan ' + removablePerson.name)
     personService
-      .remove(personID)
+      .remove(removablePerson.id)
       .then(
-        setPersons(persons.filter(person => person.id !== personID)),
-        setErrorMessage('done'),
-        setTimeout(() => {
-          setErrorMessage(null)
-        }, 3000)
+        showSuccessMessage(`Person ${removablePerson.name} removed`),
+        setPersons(persons.filter(person =>
+          person.id !== removablePerson.id
+        ))
       )
   }
 
@@ -72,7 +89,6 @@ const App = () => {
         ))
       })
       .catch(error => {
-        alert(`${UpdatePerson.name} was already removed from server`)
         showErrorMessage(`${UpdatePerson.name} was already removed from server`)
       })
   }
@@ -94,13 +110,6 @@ const App = () => {
     setNewNumber('')
   }
 
-  const showErrorMessage = message => {
-    setErrorMessage(message)
-    setTimeout(() => {
-      setErrorMessage(null)}, 5000
-    )
-  }
-
   const phonebookRows = () => {
     const lowerCaseFilter = filterText.toLowerCase()
     // Filter compares person name on low case with filter word
@@ -113,7 +122,8 @@ const App = () => {
 
   return (
     <div>
-      <Notification message={errorMessage} />
+      <ErrorNotification message={errorMessage} />
+      <SuccessNotifications message={successMessage} />
       <h2>Phonebook</h2>
         <FilterField
           handleFilterChange={handleFilterChange}

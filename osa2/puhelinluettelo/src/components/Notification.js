@@ -1,15 +1,8 @@
 import React from 'react'
 
-const Notification = ({message}) => {
-  const notificationStyle = {
-    color: 'red'
-  }
-  if (message === null) {
-    return null
-  }
-
+const Notification = ({message, style}) => {
   return (
-    <div style={notificationStyle}>
+    <div style={style}>
       {message}
     </div>
   )
