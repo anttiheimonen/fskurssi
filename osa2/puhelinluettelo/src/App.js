@@ -3,12 +3,14 @@ import PersonForm from './components/PersonForm'
 import Numbers from './components/Numbers'
 import FilterField from './components/FilterField'
 import personService from './services/persons'
+import Notification from './components/Notification'
 
 const App = () => {
   const [ persons, setPersons] = useState([])
   const [ newName, setNewName ] = useState('')
   const [ newNumber, setNewNumber] = useState('')
   const [ filterText, setFilterText ] = useState('')
+  const [ errorMessage, setErrorMessage] = useState('Placeholder error')
 
   useEffect(() => {
     personService
@@ -35,7 +37,11 @@ const App = () => {
     personService
       .remove(personID)
       .then(
-        setPersons(persons.filter(person => person.id !== personID))
+        setPersons(persons.filter(person => person.id !== personID)),
+        setErrorMessage('done'),
+        setTimeout(() => {
+          setErrorMessage(null)
+        }, 3000)
       )
   }
 
@@ -66,7 +72,8 @@ const App = () => {
         ))
       })
       .catch(error => {
-        console.log(`Error while updating person`)
+        alert(`${UpdatePerson.name} was already removed from server`)
+        showErrorMessage(`${UpdatePerson.name} was already removed from server`)
       })
   }
 
@@ -87,6 +94,13 @@ const App = () => {
     setNewNumber('')
   }
 
+  const showErrorMessage = message => {
+    setErrorMessage(message)
+    setTimeout(() => {
+      setErrorMessage(null)}, 5000
+    )
+  }
+
   const phonebookRows = () => {
     const lowerCaseFilter = filterText.toLowerCase()
     // Filter compares person name on low case with filter word
@@ -99,6 +113,7 @@ const App = () => {
 
   return (
     <div>
+      <Notification message={errorMessage} />
       <h2>Phonebook</h2>
         <FilterField
           handleFilterChange={handleFilterChange}

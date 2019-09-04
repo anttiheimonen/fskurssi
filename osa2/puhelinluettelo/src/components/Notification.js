@@ -1,12 +1,15 @@
 import React from 'react'
 
 const Notification = ({message}) => {
+  const notificationStyle = {
+    color: 'red'
+  }
   if (message === null) {
     return null
   }
 
   return (
-    <div className='error'>
+    <div style={notificationStyle}>
       {message}
     </div>
   )
