@@ -11,8 +11,8 @@ const App = () => {
   const [ newName, setNewName ] = useState('')
   const [ newNumber, setNewNumber] = useState('')
   const [ filterText, setFilterText ] = useState('')
-  const [ errorMessage, setErrorMessage] = useState('Placeholder error')
-  const [ successMessage, setSuccessMessage] = useState('Placeholder success')
+  const [ errorMessage, setErrorMessage] = useState(null)
+  const [ successMessage, setSuccessMessage] = useState(null)
 
   useEffect(() => {
     personService
@@ -49,17 +49,33 @@ const App = () => {
     )
   }
 
+  const clearPersonForm = () =>{
+    setNewName('')
+    setNewNumber('')
+  }
+
+  // Removes given person from state
+  const removePersonFromList = personToRemove => {
+    setPersons(persons.filter(person =>
+      person.id !== personToRemove.id
+    ))
+  }
+
   // Removes person with given id-number
   const removePerson = (removablePerson) => {
     console.log('poistetaan ' + removablePerson.name)
     personService
       .remove(removablePerson.id)
-      .then(
-        showSuccessMessage(`Person ${removablePerson.name} removed`),
-        setPersons(persons.filter(person =>
-          person.id !== removablePerson.id
-        ))
-      )
+      .then( () => {
+        showSuccessMessage(`Person ${removablePerson.name} removed`)
+        removePersonFromList(removablePerson)
+      })
+      .catch (error => {
+        showErrorMessage(
+          `Person ${removablePerson.name} was already removed from the server`
+          )
+          removePersonFromList(removablePerson)
+      })
   }
 
   // Adds new person and sends object to server
@@ -73,13 +89,21 @@ const App = () => {
       .then(returnedPerson => {
         console.log(returnedPerson)
         setPersons(persons.concat(returnedPerson))
+        showSuccessMessage(`${returnedPerson.name} has been added`)
+        clearPersonForm()
+      })
+      .catch(error => {
+        showErrorMessage(`Adding new person failed`)
+        // Do not clear person form as user might need that info
       })
   }
 
   // Updates persons information
   const updatePerson = UpdatePerson => {
-    const answer = confirm(`${UpdatePerson.name} is already added to ` +
-      `phonebook. Replace the old number with a new one?`)
+    const answer = confirm(
+      `${UpdatePerson.name} is already added to ` +
+      `phonebook. Replace the old number with a new one?`
+    )
     if (!answer) return
     const updatedPerson = { ...UpdatePerson, number: newNumber}
     personService
@@ -89,9 +113,13 @@ const App = () => {
         setPersons(persons.map(person =>
           person.id !== returnedPerson.id ? person : returnedPerson
         ))
+        showSuccessMessage(`${returnedPerson.name} has been updated`)
+        clearPersonForm()
       })
       .catch(error => {
         showErrorMessage(`${UpdatePerson.name} was already removed from server`)
+        removePersonFromList(UpdatePerson)
+        // Do not clear person form as user might need that info
       })
   }
 
@@ -105,17 +133,12 @@ const App = () => {
     oldPerson === undefined ?
         addNewPerson()
       : updatePerson(oldPerson)
-
-    // Input fields will be cleared even if user cancels
-    // the update. Not ideal.
-    setNewName('')
-    setNewNumber('')
   }
 
   const phonebookRows = () => {
     const lowerCaseFilter = filterText.toLowerCase()
-    // Filter compares person name on low case with filter word
-    // on low case.
+    // Filter compares person name on lower case with filter word
+    // on lower case.
     return <Numbers persons={persons.filter(
       person => person.name.toLowerCase().includes(lowerCaseFilter)
     )}
