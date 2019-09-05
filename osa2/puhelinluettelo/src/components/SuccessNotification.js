@@ -1,6 +1,8 @@
 import React from 'react'
 import Notification from './Notification'
 
+// SuccessNotification adds it own error style to
+// Notification-component.
 const SuccessNotification = ({message}) => {
     const successStyle = {
         color: 'green'

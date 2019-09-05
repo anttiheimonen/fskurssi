@@ -62,6 +62,7 @@ const App = () => {
       )
   }
 
+  // Adds new person and sends object to server
   const addNewPerson = () => {
     const newPerson = {
       name: newName,
@@ -75,6 +76,7 @@ const App = () => {
       })
   }
 
+  // Updates persons information
   const updatePerson = UpdatePerson => {
     const answer = confirm(`${UpdatePerson.name} is already added to ` +
       `phonebook. Replace the old number with a new one?`)
@@ -122,9 +124,11 @@ const App = () => {
 
   return (
     <div>
-      <ErrorNotification message={errorMessage} />
-      <SuccessNotifications message={successMessage} />
       <h2>Phonebook</h2>
+      <div>
+        <ErrorNotification message={errorMessage} />
+        <SuccessNotifications message={successMessage} />
+      </div>
         <FilterField
           handleFilterChange={handleFilterChange}
         />
