@@ -3,11 +3,13 @@ import axios from 'axios'
 import Filter from "./components/Filter"
 import CountryList from './components/CountryList'
 import CountryDetails from './components/CountryDetails'
+import Weather from './components/Weather'
 
 const App = () => {
 
   const [ countries, setCountries ] = useState([])
-  const [ filter, setFilter ] = useState('Fi')
+  const [ filter, setFilter ] = useState('Finl')
+  const [ weather, setWeather] = useState([])
 
   useEffect(() => {
     axios
@@ -21,6 +23,14 @@ const App = () => {
   const handleFilterChange = (event) => {
     setFilter(event.target.value)
   }
+
+  const showCountryDetails = (country) => {
+    return (
+      <div>
+        <CountryDetails country={country}/>
+        <Weather city={country.capital} cityWeather={() => setWeather} />
+      </div>
+  )}
 
   // Returns country filtered country list
   const showCountryList = () => {
@@ -38,7 +48,7 @@ const App = () => {
             onClick={(country) => setFilter(country)}
           />
       : (filteredCountries.length > 0) ?
-          <CountryDetails country={filteredCountries[0]}/>
+          showCountryDetails(filteredCountries[0])
       :   'No results'
   }
 

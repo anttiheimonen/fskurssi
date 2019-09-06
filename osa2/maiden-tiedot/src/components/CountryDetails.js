@@ -14,7 +14,6 @@ const CountryDetails = ({country}) => {
       </div>
         <ul>
           <Languages languages={country.languages} />
-
         </ul>
       <div>
         <img src={country.flag} alt='Flag of the country'    />
