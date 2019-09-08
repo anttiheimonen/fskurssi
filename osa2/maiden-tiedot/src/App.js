@@ -3,20 +3,17 @@ import axios from 'axios'
 import Filter from "./components/Filter"
 import CountryList from './components/CountryList'
 import CountryDetails from './components/CountryDetails'
-import Weather from './components/Weather'
 
 const App = () => {
 
   const [ countries, setCountries ] = useState([])
-  const [ filter, setFilter ] = useState('Finl')
-  const [ weather, setWeather] = useState([])
+  const [ filter, setFilter ] = useState('')
 
   useEffect(() => {
     axios
       .get('https://restcountries.eu/rest/v2/all')
       .then(response => {
         setCountries(response.data)
-        console.log(response.data)
     })
   }, [])
 
@@ -25,16 +22,17 @@ const App = () => {
   }
 
   const showCountryDetails = (country) => {
+    console.log(country.capital);
     return (
       <div>
         <CountryDetails country={country}/>
-        <Weather city={country.capital} cityWeather={() => setWeather} />
       </div>
   )}
 
   // Returns country filtered country list
   const showCountryList = () => {
     const lowerCaseFilter = filter.toLowerCase()
+
     // Create a new array that has filtered countries
     const filteredCountries = countries.filter(country =>
       country.name.toLowerCase().includes(lowerCaseFilter))
@@ -63,6 +61,5 @@ const App = () => {
     </div>
   )
 }
-
 
 export default App

@@ -1,5 +1,6 @@
 import React from 'react'
 
+// Creates a list of countries
 const CountryList = ({countries, onClick}) => {
   const row = (country) => {
     return (

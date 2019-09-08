@@ -12,5 +12,4 @@ const Filter = ({ value, handleChange }) => {
   )
 }
 
-
 export default Filter
