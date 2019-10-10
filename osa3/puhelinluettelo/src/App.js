@@ -91,7 +91,7 @@ const App = () => {
         clearPersonForm()
       })
       .catch(error => {
-        showErrorMessage(`Adding new person failed`)
+        showErrorMessage(error.response.data.error)
         // Do not clear person form as user might need that info
       })
   }
@@ -115,8 +115,8 @@ const App = () => {
         clearPersonForm()
       })
       .catch(error => {
-        showErrorMessage(`${UpdatePerson.name} was already removed from server`)
-        removePersonFromList(UpdatePerson)
+        showErrorMessage(error.response.data.error)
+        // removePersonFromList(UpdatePerson)
         // Do not clear person form as user might need that info
       })
   }
