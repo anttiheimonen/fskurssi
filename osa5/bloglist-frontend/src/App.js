@@ -12,12 +12,22 @@ const App = () => {
   const [ blogs, setBlogs ] = useState([])
 
   useEffect(() => {
-    // This should be changed to use async - await !!!
+    // Get initial blogs
+    // This should be changed to use async - await ?
     blogsService
       .getAll()
         .then(initialBlogs => {
           setBlogs(initialBlogs)
         })
+  }, [])
+
+  useEffect(() => {
+    // get user info from local storage, if user is logged in
+    const loggedUserJSON = window.localStorage.getItem('loggedUser')
+    if (loggedUserJSON) {
+      const user = JSON.parse(loggedUserJSON)
+      setUser(user)
+    }
   }, [])
 
   const handleSignin = async event => {
@@ -29,9 +39,27 @@ const App = () => {
       setUser(user)
       setUsername('')
       setPassword('')
+      console.log(user)
+
+      window.localStorage.setItem('loggedUser', JSON.stringify(user))
     } catch (exception) {
       console.log("Error on signin")
     }
+  }
+
+  const userInfo = () => {
+    return (
+      <div>
+        {user.name} is logged in
+        <button onClick={ () => userLogOut() }> log out </button>
+      </div>
+      )
+  }
+
+  const userLogOut = () => {
+    console.log('Logging out')
+    window.localStorage.clear()
+    setUser(null)
   }
 
   const blogRows = () => {
@@ -68,6 +96,7 @@ const App = () => {
   return (
     <div>
       <h2>Blogs</h2>
+      {userInfo()}
       {blogRows()}
     </div>
   )
