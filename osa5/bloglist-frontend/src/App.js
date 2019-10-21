@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import loginService from './services/login'
 import blogsService from './services/blogs'
 import Blog from './components/Blog'
-// import './App.css'
+import BlogForm from './components/BlogForm'
 
 
 const App = () => {
@@ -36,6 +36,9 @@ const App = () => {
       const user = await loginService.login({
         username, password,
       })
+      console.log('User token kirjautumisesta ', user.token)
+
+      blogsService.setToken(user.token)
       setUser(user)
       setUsername('')
       setPassword('')
@@ -59,6 +62,7 @@ const App = () => {
   const userLogOut = () => {
     console.log('Logging out')
     window.localStorage.clear()
+    blogsService.setToken(null)
     setUser(null)
   }
 
@@ -66,6 +70,15 @@ const App = () => {
     // console.log(blogs)
     blogs.map(blog => <Blog blog={blog} />)
     return (blogs.map(blog => <Blog key={blog.id} blog={blog} />))
+  }
+
+  const createNewBlog = async blog => {
+    console.log(blog)
+    const response = await blogsService.create(blog)
+    console.log('vastaus ', response )
+    setBlogs(blogs.concat(response))
+
+
   }
 
   if (user === null) {
@@ -97,6 +110,7 @@ const App = () => {
     <div>
       <h2>Blogs</h2>
       {userInfo()}
+      <BlogForm submitFunction={(blog) => createNewBlog(blog) }></BlogForm>
       {blogRows()}
     </div>
   )
