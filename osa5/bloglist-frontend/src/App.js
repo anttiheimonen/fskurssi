@@ -3,6 +3,7 @@ import loginService from './services/login'
 import blogsService from './services/blogs'
 import Blog from './components/Blog'
 import BlogForm from './components/BlogForm'
+import Notification from './components/Notification'
 
 
 const App = () => {
@@ -10,6 +11,7 @@ const App = () => {
   const [ username, setUsername ] = useState('')
   const [ password, setPassword ] = useState('')
   const [ blogs, setBlogs ] = useState([])
+  const [ notification, setNotification ] = useState(null)
 
   useEffect(() => {
     // Get initial blogs
@@ -27,8 +29,16 @@ const App = () => {
     if (loggedUserJSON) {
       const user = JSON.parse(loggedUserJSON)
       setUser(user)
+      blogsService.setToken(user.token)
     }
   }, [])
+
+  const notify = message => {
+    setNotification(message)
+    setTimeout(() => {
+      setNotification(null)}, 3000
+    )
+  }
 
   const handleSignin = async event => {
     event.preventDefault()
@@ -36,17 +46,15 @@ const App = () => {
       const user = await loginService.login({
         username, password,
       })
-      console.log('User token kirjautumisesta ', user.token)
 
       blogsService.setToken(user.token)
       setUser(user)
       setUsername('')
       setPassword('')
-      console.log(user)
 
       window.localStorage.setItem('loggedUser', JSON.stringify(user))
     } catch (exception) {
-      console.log("Error on signin")
+      notify('Login failed')
     }
   }
 
@@ -73,45 +81,54 @@ const App = () => {
   }
 
   const createNewBlog = async blog => {
-    console.log(blog)
-    const response = await blogsService.create(blog)
-    console.log('vastaus ', response )
-    setBlogs(blogs.concat(response))
-
-
+    try {
+      const response = await blogsService.create(blog)
+      setBlogs(blogs.concat(response))
+      notify(`New blog by ${response.title} by ${response.author} added `)
+    } catch (exception) {
+      console.log(exception)
+      notify('Error happened while adding a new blog')
+    }
   }
 
-  if (user === null) {
-    return (
-      <form onSubmit={handleSignin}>
-        <div><h2>Log in</h2></div>
-        <div>
-          <input
-            type='text'
-            placeholder='Username'
-            value={username}
-            name='Username'
-            onChange={({ target }) => setUsername(target.value)}
-          />
-          <input
-          type='password'
-            placeholder='Password'
-            value={password}
-            name='Password'
-            onChange={({ target }) => setPassword(target.value)}
-          />
-           <button type="submit">login</button>
-        </div>
-      </form>
-    )
-  }
+  const loginForm = () => (
+    <form onSubmit={handleSignin}>
+      <div><h2>Log in</h2></div>
+      <div>
+        <input
+          type='text'
+          placeholder='Username'
+          value={username}
+          name='Username'
+          onChange={({ target }) => setUsername(target.value)}
+        />
+        <input
+        type='password'
+          placeholder='Password'
+          value={password}
+          name='Password'
+          onChange={({ target }) => setPassword(target.value)}
+        />
+        <button type="submit">login</button>
+      </div>
+    </form>
+  )
 
-  return (
+  const blogForm = () => (
     <div>
       <h2>Blogs</h2>
       {userInfo()}
       <BlogForm submitFunction={(blog) => createNewBlog(blog) }></BlogForm>
       {blogRows()}
+    </div>
+  )
+
+  return (
+    <div>
+      <Notification message={notification}></Notification>
+      {(user === null) ?
+        loginForm() :
+        blogForm()}
     </div>
   )
 }

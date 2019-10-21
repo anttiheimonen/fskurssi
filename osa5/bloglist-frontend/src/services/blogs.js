@@ -3,11 +3,12 @@ const baseUrl = '/api/blogs'
 
 let token = null
 
+// Sets token that is used in header - authorization
+// in blog requests
 const setToken = newToken => {
   newToken === null
     ? token = null
     : token = `bearer ${newToken}`
-  console.log('Token asetettu: ', token)
 }
 
 const getAll = async () => {
@@ -16,7 +17,6 @@ const getAll = async () => {
 }
 
 const create = async (blog) => {
-  console.log(blog)
   const config = {
     headers: { Authorization: token },
   }
