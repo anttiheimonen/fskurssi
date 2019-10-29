@@ -4,6 +4,7 @@ import blogsService from './services/blogs'
 import Blog from './components/Blog'
 import BlogForm from './components/BlogForm'
 import Notification from './components/Notification'
+import Togglable from './components/Togglable'
 
 
 const App = () => {
@@ -80,8 +81,11 @@ const App = () => {
     return (blogs.map(blog => <Blog key={blog.id} blog={blog} />))
   }
 
+  const blogFormRef = React.createRef()
+
   const createNewBlog = async blog => {
     try {
+      blogFormRef.current.toggleVisibility()
       const response = await blogsService.create(blog)
       setBlogs(blogs.concat(response))
       notify(`New blog by ${response.title} by ${response.author} added `)
@@ -118,7 +122,9 @@ const App = () => {
     <div>
       <h2>Blogs</h2>
       {userInfo()}
-      <BlogForm submitFunction={(blog) => createNewBlog(blog) }></BlogForm>
+      <Togglable buttonLabel='Add a new blog' ref={blogFormRef} >
+        <BlogForm submitFunction={(blog) => createNewBlog(blog) } />
+      </Togglable>
       {blogRows()}
     </div>
   )
