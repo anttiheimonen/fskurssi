@@ -1,11 +1,18 @@
 import React, { useState, useImperativeHandle } from 'react'
 
-// const Blog = React.forwardRef((props, ref) => {
 const Blog = React.forwardRef((props, ref) => {
   const [visible, setVisible] = useState(false)
 
-  const hideWhenVisible = { display: visible ? 'none' : '' }
-  const showWhenVisible = { display: visible ? '' : 'none' }
+  const blogStyle = {
+    paddingTop: 5,
+    paddingLeft: 2,
+    background: 'lightgray',
+    borderradius: 10,
+    borderWidth: 1,
+    marginBottom: 10
+  }
+
+  const showWhenOpen = { display: visible ? '' : 'none' }
 
   const toggleVisibility = () => {
     setVisible(!visible)
@@ -17,9 +24,17 @@ const Blog = React.forwardRef((props, ref) => {
     }
   })
 
+  // Returns a collapsible blog element
   return (
-    <div onClick={toggleVisibility}>>
-      {props.blog.title} {props.blog.author}
+    <div style={blogStyle}>
+      <div onClick={toggleVisibility}>
+        {props.blog.title} {props.blog.author}
+      </div>
+      <div style={showWhenOpen}>
+        <div>{props.blog.url}</div>
+        <div>Likes {props.blog.likes} <button>Like</button></div>
+        <div>Added by {props.blog.user.username}</div>
+      </div>
     </div>
   )
 })
