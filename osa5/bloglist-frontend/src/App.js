@@ -76,13 +76,14 @@ const App = () => {
   }
 
   const blogRows = () => {
-    // console.log(blogs)
+    console.log(blogs)
     blogs.map(blog => <Blog blog={blog} />)
     return (blogs.map(blog => <Blog
       key={blog.id}
       blog={blog}
       handleLike={handleLike}
-      handleRemove={handleRemove} />))
+      handleRemove={handleRemove}
+      canRemove={blog.user.username === user.username} />))
   }
 
   const blogFormRef = React.createRef()

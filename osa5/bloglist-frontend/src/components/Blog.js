@@ -1,6 +1,6 @@
 import React, { useState, useImperativeHandle } from 'react'
 
-const Blog = React.forwardRef(({blog, handleLike, handleRemove}, ref) => {
+const Blog = React.forwardRef(({blog, handleLike, handleRemove, canRemove}, ref) => {
   const [visible, setVisible] = useState(false)
 
   const blogStyle = {
@@ -12,7 +12,10 @@ const Blog = React.forwardRef(({blog, handleLike, handleRemove}, ref) => {
     marginBottom: 10
   }
 
+  // Style for open and close states of a blog element
   const showWhenOpen = { display: visible ? '' : 'none' }
+  // Style for remove button's div
+  const showWhenRemovable = { display: canRemove ? '' : 'none' }
 
   const toggleVisibility = () => {
     setVisible(!visible)
@@ -24,6 +27,9 @@ const Blog = React.forwardRef(({blog, handleLike, handleRemove}, ref) => {
     }
   })
 
+  console.log(canRemove);
+
+
   // Returns a collapsible blog element
   return (
     <div style={blogStyle}>
@@ -34,7 +40,9 @@ const Blog = React.forwardRef(({blog, handleLike, handleRemove}, ref) => {
         <div>{blog.url}</div>
         <div>Likes {blog.likes} <button onClick={() => handleLike(blog)}>Like</button></div>
         <div>Added by {blog.user.name}</div>
-        <button onClick={() => handleRemove(blog)}>Remove</button>
+        <div style={showWhenRemovable}>
+          <button onClick={() => handleRemove(blog)}>Remove</button>
+        </div>
       </div>
     </div>
   )
