@@ -1,8 +1,7 @@
 import React, { useState, useImperativeHandle } from 'react'
 
-const Blog = React.forwardRef((props, ref) => {
+const Blog = React.forwardRef(({blog, handleLike}, ref) => {
   const [visible, setVisible] = useState(false)
-  const [likes, setLikes] = useState(props.blog.likes)
 
   const blogStyle = {
     paddingTop: 5,
@@ -29,12 +28,12 @@ const Blog = React.forwardRef((props, ref) => {
   return (
     <div style={blogStyle}>
       <div onClick={toggleVisibility}>
-        {props.blog.title} {props.blog.author}
+        {blog.title} {blog.author}
       </div>
       <div style={showWhenOpen}>
-        <div>{props.blog.url}</div>
-        <div>Likes {likes} <button onClick={() => setLikes(likes+1)}>Like</button></div>
-        <div>Added by {props.blog.user.username}</div>
+        <div>{blog.url}</div>
+        <div>Likes {blog.likes} <button onClick={() => handleLike(blog)}>Like</button></div>
+        <div>Added by {blog.user.username}</div>
       </div>
     </div>
   )

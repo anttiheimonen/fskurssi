@@ -78,7 +78,7 @@ const App = () => {
   const blogRows = () => {
     // console.log(blogs)
     blogs.map(blog => <Blog blog={blog} />)
-    return (blogs.map(blog => <Blog key={blog.id} blog={blog} />))
+    return (blogs.map(blog => <Blog key={blog.id} blog={blog} handleLike={handleLike} />))
   }
 
   const blogFormRef = React.createRef()
@@ -129,6 +129,23 @@ const App = () => {
     </div>
   )
 
+  // Add one like to a blog and send it to server
+  const handleLike = async blog => {
+    // console.log(`Liked blog ${blog.id}`)
+    // console.log(blog)
+    const updatedBlog = {
+      'id': blog.id,
+      'author': blog.author,
+      'title': blog.title,
+      'url': blog.url,
+      'likes': blog.likes + 1,
+      'user': blog.user.id
+    }
+
+    const response = await blogsService.update(updatedBlog)
+    setBlogs(blogs.map( b => b.id === response.id ? response : b ))
+  }
+
   return (
     <div>
       <Notification message={notification}></Notification>
@@ -139,4 +156,4 @@ const App = () => {
   )
 }
 
-export default App;
+export default App
