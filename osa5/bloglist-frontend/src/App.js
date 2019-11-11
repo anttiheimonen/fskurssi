@@ -15,8 +15,10 @@ const App = () => {
   const [ notification, setNotification ] = useState(null)
 
   useEffect(() => {
+    // Initialize blogs state with sorted list of blogs
     async function initializeBlogs() {
       const initialBlogs = await blogsService.getAll()
+      initialBlogs.sort(sortByLikes)
       setBlogs(initialBlogs)
     }
     initializeBlogs()
@@ -127,6 +129,8 @@ const App = () => {
     </div>
   )
 
+  const sortByLikes = (a, b) => b.likes - a.likes
+
   // Add one like to a blog and send it to server
   const handleLike = async blog => {
     // console.log(`Liked blog ${blog.id}`)
@@ -141,7 +145,11 @@ const App = () => {
     }
 
     const response = await blogsService.update(updatedBlog)
-    setBlogs(blogs.map( b => b.id === response.id ? response : b ))
+    const updatedBlogs = blogs.map( b => b.id === response.id ? response : b )
+    // Sort list
+    updatedBlogs.sort((a,b) => sortByLikes(a,b) )
+    // console.log(updatedBlogs)
+    setBlogs(updatedBlogs)
   }
 
   return (
