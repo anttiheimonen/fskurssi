@@ -1,6 +1,6 @@
 import React, { useState, useImperativeHandle } from 'react'
 
-const Blog = React.forwardRef(({blog, handleLike}, ref) => {
+const Blog = React.forwardRef(({blog, handleLike, handleRemove}, ref) => {
   const [visible, setVisible] = useState(false)
 
   const blogStyle = {
@@ -33,7 +33,8 @@ const Blog = React.forwardRef(({blog, handleLike}, ref) => {
       <div style={showWhenOpen}>
         <div>{blog.url}</div>
         <div>Likes {blog.likes} <button onClick={() => handleLike(blog)}>Like</button></div>
-        <div>Added by {blog.user.username}</div>
+        <div>Added by {blog.user.name}</div>
+        <button onClick={() => handleRemove(blog)}>Remove</button>
       </div>
     </div>
   )

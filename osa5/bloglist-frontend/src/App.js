@@ -78,7 +78,11 @@ const App = () => {
   const blogRows = () => {
     // console.log(blogs)
     blogs.map(blog => <Blog blog={blog} />)
-    return (blogs.map(blog => <Blog key={blog.id} blog={blog} handleLike={handleLike} />))
+    return (blogs.map(blog => <Blog
+      key={blog.id}
+      blog={blog}
+      handleLike={handleLike}
+      handleRemove={handleRemove} />))
   }
 
   const blogFormRef = React.createRef()
@@ -87,6 +91,13 @@ const App = () => {
     try {
       blogFormRef.current.toggleVisibility()
       const response = await blogsService.create(blog)
+
+      // My backend does not populate user field with user information
+      // on reponses to new entries. This is a work around so new blog
+      // entry gets name of the person who added it without reloading.
+      const tempUser = {...user}
+      response.user = tempUser
+
       setBlogs(blogs.concat(response))
       notify(`New blog by ${response.title} by ${response.author} added `)
     } catch (exception) {
@@ -150,6 +161,25 @@ const App = () => {
     updatedBlogs.sort((a,b) => sortByLikes(a,b) )
     // console.log(updatedBlogs)
     setBlogs(updatedBlogs)
+  }
+
+  const handleRemove = async blog => {
+    console.log(`Removing ${blog.id}`)
+    console.log(blog)
+    const confirm = window.confirm(`Remove blog ${blog.title} by ${blog.author}`)
+    if(!confirm){
+      return
+    }
+
+    // Remove from server
+    const response = await blogsService.remove(blog)
+    // remove from state and webpage if removed from server
+    if (response === 204) {
+      notify(`Blog ${blog.title} by ${blog.author} removed`)
+      setBlogs(blogs.filter( b => b.id !== blog.id ))
+    } else {
+      notify(`You are not authorized to remove blog ${blog.title} by ${blog.author}`)
+    }
   }
 
   return (
