@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 
-const BlogForm = ( {submitFunction} ) => {
+const BlogForm = ( { submitFunction } ) => {
   const [ title, setTitle ] = useState('')
   const [ author, setAuthor ] = useState('')
   const [ url, setUrl ] = useState('')
@@ -42,11 +42,11 @@ const BlogForm = ( {submitFunction} ) => {
       <div>
         <label htmlFor='url'>url</label>
         <input
-        type='text'
-        onChange={({ target }) => setUrl(target.value)}
-        value={url}
-        name='url'
-        id='url'/>
+          type='text'
+          onChange={({ target }) => setUrl(target.value)}
+          value={url}
+          name='url'
+          id='url'/>
       </div>
 
       <button type='submit'>Add</button>

@@ -1,7 +1,7 @@
 import React, { useState, useImperativeHandle } from 'react'
 import PropTypes from 'prop-types'
 
-const Blog = React.forwardRef(({blog, handleLike, handleRemove, canRemove}, ref) => {
+const Blog = React.forwardRef(({ blog, handleLike, handleRemove, canRemove }, ref) => {
   const [visible, setVisible] = useState(false)
 
   const blogStyle = {

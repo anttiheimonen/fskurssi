@@ -9,7 +9,7 @@ import Togglable from './components/Togglable'
 
 const App = () => {
   const [ user, setUser] = useState(null)
-  const [ username, setUsername ] = useState('')
+  const [ username, setUsername ] = useState('')
   const [ password, setPassword ] = useState('')
   const [ blogs, setBlogs ] = useState([])
   const [ notification, setNotification ] = useState(null)
@@ -54,7 +54,7 @@ const App = () => {
       setPassword('')
 
       window.localStorage.setItem('loggedUser', JSON.stringify(user))
-    } catch (exception) {
+    } catch (exception) {
       notify('Login failed')
     }
   }
@@ -65,7 +65,7 @@ const App = () => {
         {user.name} is logged in
         <button onClick={ () => userLogOut() }> log out </button>
       </div>
-      )
+    )
   }
 
   const userLogOut = () => {
@@ -86,7 +86,7 @@ const App = () => {
 
   const blogFormRef = React.createRef()
 
-  const createNewBlog = async blog => {
+  const createNewBlog = async blog => {
     try {
       blogFormRef.current.toggleVisibility()
       const response = await blogsService.create(blog)
@@ -94,7 +94,7 @@ const App = () => {
       // My backend does not populate user field with user information
       // on reponses to new entries. This is a work around so new blog
       // entry gets name of the person who added it without reloading.
-      const tempUser = {...user}
+      const tempUser = { ...user }
       response.user = tempUser
 
       setBlogs(blogs.concat(response))
@@ -117,7 +117,7 @@ const App = () => {
           onChange={({ target }) => setUsername(target.value)}
         />
         <input
-        type='password'
+          type='password'
           placeholder='Password'
           value={password}
           name='Password'
