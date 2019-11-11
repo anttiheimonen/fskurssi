@@ -15,13 +15,11 @@ const App = () => {
   const [ notification, setNotification ] = useState(null)
 
   useEffect(() => {
-    // Get initial blogs
-    // This should be changed to use async - await ?
-    blogsService
-      .getAll()
-        .then(initialBlogs => {
-          setBlogs(initialBlogs)
-        })
+    async function initializeBlogs() {
+      const initialBlogs = await blogsService.getAll()
+      setBlogs(initialBlogs)
+    }
+    initializeBlogs()
   }, [])
 
   useEffect(() => {
