@@ -1,4 +1,5 @@
 import React, { useState, useImperativeHandle } from 'react'
+import PropTypes from 'prop-types'
 
 const Blog = React.forwardRef(({blog, handleLike, handleRemove, canRemove}, ref) => {
   const [visible, setVisible] = useState(false)
@@ -27,9 +28,6 @@ const Blog = React.forwardRef(({blog, handleLike, handleRemove, canRemove}, ref)
     }
   })
 
-  console.log(canRemove);
-
-
   // Returns a collapsible blog element
   return (
     <div style={blogStyle}>
@@ -47,5 +45,13 @@ const Blog = React.forwardRef(({blog, handleLike, handleRemove, canRemove}, ref)
     </div>
   )
 })
+
+// PropTypes definitions of props
+Blog.propTypes = {
+  blog: PropTypes.object.isRequired,
+  handleLike: PropTypes.func.isRequired,
+  handleRemove: PropTypes.func.isRequired,
+  canRemove: PropTypes.bool.isRequired
+}
 
 export default Blog

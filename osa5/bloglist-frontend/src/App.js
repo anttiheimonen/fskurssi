@@ -76,8 +76,6 @@ const App = () => {
   }
 
   const blogRows = () => {
-    console.log(blogs)
-    blogs.map(blog => <Blog blog={blog} />)
     return (blogs.map(blog => <Blog
       key={blog.id}
       blog={blog}
