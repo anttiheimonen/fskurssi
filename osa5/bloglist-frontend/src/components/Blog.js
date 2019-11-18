@@ -31,10 +31,10 @@ const Blog = React.forwardRef(({ blog, handleLike, handleRemove, canRemove }, re
   // Returns a collapsible blog element
   return (
     <div style={blogStyle}>
-      <div onClick={toggleVisibility}>
+      <div onClick={toggleVisibility} className="header">
         {blog.title} {blog.author}
       </div>
-      <div style={showWhenOpen}>
+      <div style={showWhenOpen} className="togglableContent">
         <div>{blog.url}</div>
         <div>Likes {blog.likes} <button onClick={() => handleLike(blog)}>Like</button></div>
         <div>Added by {blog.user.name}</div>
