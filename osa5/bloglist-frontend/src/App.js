@@ -5,14 +5,17 @@ import Blog from './components/Blog'
 import BlogForm from './components/BlogForm'
 import Notification from './components/Notification'
 import Togglable from './components/Togglable'
+import  { useField } from './hooks'
 
 
 const App = () => {
   const [ user, setUser] = useState(null)
-  const [ username, setUsername ] = useState('')
-  const [ password, setPassword ] = useState('')
+  // const [ username, setUsername ] = useState('')
+  // const [ password, setPassword ] = useState('')
   const [ blogs, setBlogs ] = useState([])
   const [ notification, setNotification ] = useState(null)
+  const username= useField('text')
+  const password = useField('password')
 
   useEffect(() => {
     // Initialize blogs state with sorted list of blogs
@@ -45,13 +48,14 @@ const App = () => {
     event.preventDefault()
     try {
       const user = await loginService.login({
-        username, password,
+        username: username.value,
+        password: password.value,
       })
 
       blogsService.setToken(user.token)
       setUser(user)
-      setUsername('')
-      setPassword('')
+      username.reset()
+      password.reset()
 
       window.localStorage.setItem('loggedUser', JSON.stringify(user))
     } catch (exception) {
@@ -100,7 +104,6 @@ const App = () => {
       setBlogs(blogs.concat(response))
       notify(`New blog by ${response.title} by ${response.author} added `)
     } catch (exception) {
-      console.log(exception)
       notify('Error happened while adding a new blog')
     }
   }
@@ -109,20 +112,8 @@ const App = () => {
     <form onSubmit={handleSignin}>
       <div><h2>Log in</h2></div>
       <div>
-        <input
-          type='text'
-          placeholder='Username'
-          value={username}
-          name='Username'
-          onChange={({ target }) => setUsername(target.value)}
-        />
-        <input
-          type='password'
-          placeholder='Password'
-          value={password}
-          name='Password'
-          onChange={({ target }) => setPassword(target.value)}
-        />
+        <input {...username} />
+        <input {...password} />
         <button type="submit">login</button>
       </div>
     </form>
@@ -163,8 +154,8 @@ const App = () => {
   }
 
   const handleRemove = async blog => {
-    console.log(`Removing ${blog.id}`)
-    console.log(blog)
+    // console.log(`Removing ${blog.id}`)
+    // console.log(blog)
     const confirm = window.confirm(`Remove blog ${blog.title} by ${blog.author}`)
     if(!confirm){
       return
