@@ -11,10 +11,16 @@ export const useField = (type) => {
     setValue('')
   }
 
+  // Object that can be used with spread syntax on input elements
+  const inputs = {
+    type: type,
+    value: value,
+    onChange: onChange
+  }
+
   return {
-    type,
     value,
-    onChange,
-    reset
+    reset,
+    inputs
   }
 }

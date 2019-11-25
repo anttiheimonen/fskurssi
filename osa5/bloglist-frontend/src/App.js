@@ -111,11 +111,9 @@ const App = () => {
   const loginForm = () => (
     <form onSubmit={handleSignin}>
       <div><h2>Log in</h2></div>
-      <div>
-        <input {...username} />
-        <input {...password} />
-        <button type="submit">login</button>
-      </div>
+      <div> username <input {...username.inputs} /> </div>
+      <div> password <input {...password.inputs} /> </div>
+      <div> <button type="submit">login</button> </div>
     </form>
   )
 
